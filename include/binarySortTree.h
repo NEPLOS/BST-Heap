@@ -24,10 +24,14 @@ public:
     Node *head = nullptr;
 
     void insertRequest(std::string name, int id);
+    void deleteRequest(int id);
+    void transplant(Node* oldNode , Node* newNode);
     bool isEmptyBST();
     Node *searchRequst(int id);
     int getSize(Node *node);
     void drawBinarySearchTree(Node* node, int x = 0 , int y = 0);
+    Node* getMinimumNode(Node* starter);
+    int drawUpToRoot(Node* node , int x , int y);
     void printBst();
 
 private:

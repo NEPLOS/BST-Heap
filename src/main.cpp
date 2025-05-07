@@ -3,6 +3,8 @@
 #include "raylib.h"
 #include "raymath.h"
 
+Camera2D camera = { 0 };
+
 int main(int argc, char *argv[])
 {
     BST binaryTree;
@@ -33,6 +35,7 @@ int main(int argc, char *argv[])
     binaryTree.insertRequest("test 23" , 1822);
     binaryTree.insertRequest("test 24" , -80);
     binaryTree.insertRequest("test 25" , -42);
+    binaryTree.insertRequest("test 26" , 4);
     
 
     binaryTree.printBst();
@@ -40,11 +43,12 @@ int main(int argc, char *argv[])
     std::cout << "\nbst size : " << binaryTree.getSize(binaryTree.head) << '\n';
 
    // std::cout << binaryTree.searchRequst(13)->name << '\n';
+   
 
     InitWindow(800,800,"project");
     SetTargetFPS(60);
 
-    Camera2D camera = { 0 };
+   // Camera2D camera = { 0 };
     camera.target = (Vector2){ 0 , 100 };
     camera.offset = (Vector2){ 400,400 };
     camera.rotation = 0.0f;
@@ -52,10 +56,11 @@ int main(int argc, char *argv[])
 
     while (WindowShouldClose() == false)
     {
+
         camera.zoom = expf(logf(camera.zoom) + ((float)GetMouseWheelMove()*0.1f));
 
         if (camera.zoom > 3.0f) camera.zoom = 3.0f;
-        else if (camera.zoom < 0.1f) camera.zoom = 0.1f;
+        else if (camera.zoom < 0.2f) camera.zoom = 0.2f;
 
         if (IsMouseButtonDown(MOUSE_BUTTON_MIDDLE))
         {
@@ -68,11 +73,10 @@ int main(int argc, char *argv[])
         BeginMode2D(camera);
         ClearBackground(WHITE);
 
-        
-
         binaryTree.drawBinarySearchTree(binaryTree.head);
 
         EndMode2D();
+
         EndDrawing();
     }
     

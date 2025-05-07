@@ -2,6 +2,24 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "build raylib project",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+              "-g",  // for debugging
+              "main.c",
+              "-O3",
+              "-o",
+              "main",
+              "-lraylib", "-lm", "-ldl", "-lpthread", "-lGL",  // Linux libraries
+            ],
+            "group": {
+              "kind": "build",
+              "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "build",
             "type": "shell",
             "group": {
