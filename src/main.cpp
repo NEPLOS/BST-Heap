@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     BST binaryTree;
 
 
-    binaryTree.insertRequest("test 1" , 20);
+    binaryTree.insertRequest("test 1" , 22);
     binaryTree.insertRequest("test 2" , 2);
     binaryTree.insertRequest("test 3" , 5);
     binaryTree.insertRequest("test 4" , 1);
@@ -24,14 +24,20 @@ int main(int argc, char *argv[])
     binaryTree.insertRequest("test 14" , -3);
     binaryTree.insertRequest("test 15" , 0);
     binaryTree.insertRequest("test 16" , 18);
-    binaryTree.insertRequest("test 17" , 29);
     binaryTree.insertRequest("test 18" , 28);
+    binaryTree.insertRequest("test 17" , 29);
     binaryTree.insertRequest("test 19" , 27);
-
+    binaryTree.insertRequest("test 20" , 122);
+    binaryTree.insertRequest("test 21" , 19);
+    binaryTree.insertRequest("test 22" , 26);
+    binaryTree.insertRequest("test 23" , 1822);
+    binaryTree.insertRequest("test 24" , -80);
+    binaryTree.insertRequest("test 25" , -42);
+    
 
     binaryTree.printBst();
 
-    std::cout << "\nbst size : " << binaryTree.getSize(binaryTree.head->rigthChild) << '\n';
+    std::cout << "\nbst size : " << binaryTree.getSize(binaryTree.head) << '\n';
 
    // std::cout << binaryTree.searchRequst(13)->name << '\n';
 
