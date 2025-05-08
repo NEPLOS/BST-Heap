@@ -28,6 +28,7 @@ public:
     void transplant(Node* oldNode , Node* newNode);
     bool isEmptyBST();
     Node *searchRequst(int id);
+    void searchRequstTrace(int id , Node* node , int x , int y);
     int getSize(Node *node);
     void drawBinarySearchTree(Node* node, int x = 0 , int y = 0);
     Node* getMinimumNode(Node* starter);

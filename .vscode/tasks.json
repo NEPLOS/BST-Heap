@@ -8,7 +8,7 @@
             "args": [
               "-g",  // for debugging
               "main.c",
-              "-O3",
+              //"-O3",
               "-o",
               "main",
               "-lraylib", "-lm", "-ldl", "-lpthread", "-lGL",  // Linux libraries

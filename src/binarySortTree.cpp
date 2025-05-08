@@ -2,6 +2,9 @@
 #include "./binarySortTree.h"
 
 extern Camera2D camera;
+extern bool nodeCollisionHelper;
+extern Node* collisionNode;
+extern int lvl;
 
 Node::Node(std::string name, int id)
 {
@@ -30,7 +33,9 @@ void BST::insertRequest(std::string name, int id)
     {
         before = temp;
 
-        if (temp->id < data->id)
+        if(temp->id == id)
+            return;
+        else if (temp->id < data->id)
             temp = temp->leftChild;
         else
             temp = temp->rigthChild;
@@ -68,6 +73,50 @@ Node *BST::searchRequst(int id)
     return temp;
 }
 
+void BST::searchRequstTrace(int id , Node* node , int x , int y)
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    std::cout << node->id << "\n";
+
+    if (id == node->id)
+    {
+        std::cerr << "found it\n";
+        DrawCircleLines(x,y,20,BLACK);
+    }
+    else if (id < node->id)
+    {
+
+        int leftChildSize = getSize(node->leftChild);
+        
+        int rightChildDistance = 70 * (leftChildSize + 1);
+        
+        if (node->rigthChild == nullptr)
+        {
+            rightChildDistance = 0;
+        }
+        DrawLineEx((Vector2){x, y}, (Vector2){x - rightChildDistance, y + rightChildDistance},6, GREEN);
+        searchRequstTrace(id,node->rigthChild,x - rightChildDistance, y + rightChildDistance);
+    }
+    else if(id > node->id)
+    {
+        int rightChildSize = getSize(node->rigthChild);
+        int leftChildDistance = 70 * (rightChildSize + 1);
+    
+        if (node->leftChild == nullptr)
+        {
+            leftChildDistance = 0;
+        }
+        DrawLineEx((Vector2){x, y}, (Vector2){x + leftChildDistance, y + leftChildDistance}, 6, GREEN);
+        searchRequstTrace(id,node->leftChild,x + leftChildDistance, y + leftChildDistance);
+    }
+    
+
+}
+
 int BST::getSize(Node *node)
 {
     if (node == nullptr)
@@ -93,7 +142,6 @@ int BST::drawUpToRoot(Node *node, int x, int y)
         distance = 70 * (getSize(temp->rigthChild) + 1);
         distance_y = distance;
         distance *= -1;
-        // DrawLineEx((Vector2){x,y} , (Vector2){x-distance,y-distance} , 10 , RED);
     }
     else
     {
@@ -102,12 +150,12 @@ int BST::drawUpToRoot(Node *node, int x, int y)
     }
 
     DrawLineEx((Vector2){x, y}, (Vector2){x + distance, y - distance_y}, 10, RED);
-    // std::cerr << distance;
     return 1 + drawUpToRoot(temp, x + distance, y - distance_y);
 }
 
 void BST::drawBinarySearchTree(Node *node, int x, int y)
 {
+ 
 
     if (node == nullptr)
     {
@@ -133,9 +181,6 @@ void BST::drawBinarySearchTree(Node *node, int x, int y)
     DrawLineEx((Vector2){x, y}, (Vector2){x + leftChildDistance, y + leftChildDistance}, 5, BLACK);
     DrawLineEx((Vector2){x, y}, (Vector2){x - rightChildDistance, y + rightChildDistance}, 5, BLACK);
 
-    bool collision = false;
-    int lvl = 0;
-
     if (CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera), (Vector2){x, y}, 40))
     {
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
@@ -146,13 +191,21 @@ void BST::drawBinarySearchTree(Node *node, int x, int y)
         
         
         lvl = drawUpToRoot(node, x, y);
-        // DrawRectangleV(GetScreenToWorld2D(GetMousePosition(),camera),(Vector2){70,70},GRAY);
-        collision = true;
+        nodeCollisionHelper = true;
+        collisionNode = node;
 
     }
 
     DrawCircle(x, y, 43, BLACK);
-    DrawCircle(x, y, 40, ORANGE);
+    if (node->parents == nullptr)
+    {
+        DrawCircle(x, y, 40, GOLD);
+    }
+    else
+    {
+        DrawCircle(x, y, 40, ORANGE);
+    }
+    
     std::string label = std::to_string(node->id);
     std::string nameLabel = node->name;
     DrawText(label.c_str(), x - MeasureText(label.c_str(), 15) / 2, y - 13, 15, BLACK);
@@ -160,22 +213,7 @@ void BST::drawBinarySearchTree(Node *node, int x, int y)
     drawBinarySearchTree(node->rigthChild, x - rightChildDistance, y + rightChildDistance);
     drawBinarySearchTree(node->leftChild, x + leftChildDistance, y + leftChildDistance);
 
-    if (collision)
-    {
-        int rectangleX = GetScreenToWorld2D(GetMousePosition(), camera).x;
-        int rectangleY = GetScreenToWorld2D(GetMousePosition(), camera).y;
 
-        std::string label = "id : " + std::to_string(node->id);
-        std::string nameLabel = "name : " + node->name;
-        std::string nodeLevel = "lvl : " + std::to_string(lvl);
-        DrawRectangleV((Vector2){rectangleX, rectangleY}, (Vector2){130, 100}, GRAY);
-        DrawRectangleLinesEx((Rectangle){rectangleX, rectangleY, 130, 100}, 4, BLACK);
-        DrawText(label.c_str(), 7 + rectangleX, rectangleY + 15, 15, BLACK);
-        DrawText(nameLabel.c_str(), 7 + rectangleX, rectangleY + 31, 15, BLACK);
-        DrawText(nodeLevel.c_str(), 7 + rectangleX, rectangleY + 47, 15, BLACK);
-    }
-
-    // DrawCircleLines(x,y,40,BLACK);
 }
 
 void BST::transplant(Node *oldNode, Node *newNode)
@@ -246,6 +284,8 @@ void BST::deleteRequest(int id)
         }
     }
 
+    target->leftChild = target->rigthChild = nullptr;
+    target->parents = nullptr;
     delete target;
 }
 
