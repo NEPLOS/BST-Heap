@@ -4,6 +4,7 @@
 #include "./button.h"
 #include "raylib.h"
 #include "raymath.h"
+#include "./maxHeap.h"
 
 Camera2D camera = {0};
 
@@ -13,7 +14,7 @@ int lvl = 0;
 textField idField((Rectangle){620, 30, 160, 40});
 textField nameField((Rectangle){620, 80, 160, 40});
 button submitButton((Rectangle){675, 130, 105, 25}, "submit", 18);
-button changeMode((Rectangle){675, 170, 105, 25}, "mode : ", 15);
+button changeMode((Rectangle){675, 170, 105, 25}, "change mode", 15);
 
 int pendingDeleteID = -1;
 
@@ -148,7 +149,19 @@ void updateCamera()
 
 int main(int argc, char *argv[])
 {
+
+	
+
 	BST binaryTree;
+	maxHeap heap;
+
+    heap.insertHeap(1, 30);
+    heap.insertHeap(2, 50);
+    heap.insertHeap(3, 20);
+    heap.insertHeap(4, 60);
+    heap.insertHeap(5, 40);
+
+	heap.print();
 
 	binaryTree.insertRequest("test 1", 22);
 	binaryTree.insertRequest("test 2", 2);
@@ -157,14 +170,14 @@ int main(int argc, char *argv[])
 	binaryTree.insertRequest("test 5", 8);
 	binaryTree.insertRequest("test 6", 6);
 	binaryTree.insertRequest("test 7", 25);
-	// binaryTree.insertRequest("test 8", 1811);
-	// binaryTree.insertRequest("test 9", 14);
-	// binaryTree.insertRequest("test 10", 23);
-	// binaryTree.insertRequest("test 11", 12);
-	// binaryTree.insertRequest("test 12", 121);
-	// binaryTree.insertRequest("test 13", 31);
-	// binaryTree.insertRequest("test 14", -3);
-	// binaryTree.insertRequest("test 15", 0);
+	binaryTree.insertRequest("test 8", 1811);
+	binaryTree.insertRequest("test 9", 14);
+	binaryTree.insertRequest("test 10", 23);
+	binaryTree.insertRequest("test 11", 12);
+	binaryTree.insertRequest("test 12", 121);
+	binaryTree.insertRequest("test 13", 31);
+	binaryTree.insertRequest("test 14", -3);
+	binaryTree.insertRequest("test 15", 0);
 	// binaryTree.insertRequest("test 16", 18);
 	// binaryTree.insertRequest("test 18", 28);
 	// binaryTree.insertRequest("test 17", 29);                   // yeah....test

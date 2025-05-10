@@ -1,4 +1,7 @@
 
+#ifndef BUTTON
+#define BUTTON
+
 #include <iostream>
 #include "raylib.h"
 
@@ -15,3 +18,5 @@ public:
     bool onclick();
     void drawButton();
 };
+
+#endif

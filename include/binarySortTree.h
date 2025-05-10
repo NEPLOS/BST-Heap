@@ -1,4 +1,7 @@
 
+#ifndef BINARY_SORT_TREE
+#define BINARY_SORT_TREE
+
 #include <iostream>
 #include "raylib.h"
 #include "raymath.h"
@@ -38,3 +41,5 @@ public:
 private:
     void print(Node *n);
 };
+
+#endif

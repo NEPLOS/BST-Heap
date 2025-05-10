@@ -1,4 +1,7 @@
 
+#ifndef TEXT_FIELD
+#define TEXT_FIELD
+
 #include <iostream>
 #include "raylib.h"
 
@@ -19,3 +22,5 @@ class textField
 
 
 };
+
+#endif

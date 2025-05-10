@@ -80,11 +80,11 @@ void BST::searchRequstTrace(int id , Node* node , int x , int y)
         return;
     }
 
-    std::cout << node->id << "\n";
+    //std::cout << node->id << "\n";
 
     if (id == node->id)
     {
-        std::cerr << "found it\n";
+      //  std::cerr << "found it\n";
         DrawCircleLines(x,y,20,BLACK);
     }
     else if (id < node->id)
