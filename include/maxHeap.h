@@ -25,13 +25,16 @@ class maxHeap
     bool isEmptyHeap();
     void maxHeapify(int index);
     void processHighestPriorityRequest(BST* binartTree);
+    void drawMaxHeap(int index , int x , int y , int distance);
     int getRightChild(int index);
     int getLeftChild(int index);
     int getParent(int index);
     void deleteMaxHeap();
     void heapifyUp(int index);
     void print();
-    
+    int maxchild(int index);
+    int getDepth(int index);
+        
 
 };
 

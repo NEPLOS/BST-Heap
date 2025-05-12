@@ -5,6 +5,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "./maxHeap.h"
+#include "./manager.h"
 
 Camera2D camera = {0};
 
@@ -15,8 +16,16 @@ textField idField((Rectangle){620, 30, 160, 40});
 textField nameField((Rectangle){620, 80, 160, 40});
 button submitButton((Rectangle){675, 130, 105, 25}, "submit", 18);
 button changeMode((Rectangle){675, 170, 105, 25}, "change mode", 15);
-
+std::string title = "binary search tree";
 int pendingDeleteID = -1;
+
+Font font1;// = LoadFontEx("./font/2.ttf",35,0,0);
+
+enum Tab
+{
+	TAB_BINARY_SEARCH_TREE,
+	TAB_MAX_HEAP
+};
 
 enum Mode
 {
@@ -26,10 +35,19 @@ enum Mode
 };
 
 Mode currentMode = INSERT_MODE;
+Tab currentTab = TAB_BINARY_SEARCH_TREE;
 bool IdExists = false;
 int IdSearch;
 
-void drawTextField(BST binaryTree)
+void drawFieldMaxHeap()
+{
+	// submitButtononclick()
+	// {
+
+	// }
+}
+
+void drawTextField(BST& binaryTree)
 {
 
 	if (changeMode.onclick())
@@ -82,10 +100,11 @@ void drawTextField(BST binaryTree)
 		switch (currentMode)
 		{
 		case INSERT_MODE:
+			//std::cout << targetID << '\n';
 			binaryTree.insertRequest(nameField.input, targetID);
 			break;
 		case DELETE_MODE:
-			std::cerr << "target : " << targetID << '\n';
+			//std::cerr << "target : " << targetID << '\n';
 			pendingDeleteID = targetID;
 			break;
 		default:
@@ -119,11 +138,15 @@ void panel()
         int rectangleX = GetScreenToWorld2D(GetMousePosition(), camera).x;
         int rectangleY = GetScreenToWorld2D(GetMousePosition(), camera).y;
 
+		//int rectangleX = GetMousePosition().x;
+		//int rectangleY = GetMousePosition().y;
+
         std::string label = "id : " + std::to_string(collisionNode->id);
         std::string nameLabel = "name : " + collisionNode->name;
         std::string nodeLevel = "lvl : " + std::to_string(lvl);
         DrawRectangleV((Vector2){rectangleX, rectangleY}, (Vector2){130, 100}, GRAY);
         DrawRectangleLinesEx((Rectangle){rectangleX, rectangleY, 130, 100}, 4, BLACK);
+		//DrawTextPro(font1,label.c_str(),(Vector2){7 + rectangleX, rectangleY + 15},{0,0},0,15,0,BLACK);
         DrawText(label.c_str(), 7 + rectangleX, rectangleY + 15, 15, BLACK);
         DrawText(nameLabel.c_str(), 7 + rectangleX, rectangleY + 31, 15, BLACK);
         DrawText(nodeLevel.c_str(), 7 + rectangleX, rectangleY + 47, 15, BLACK);
@@ -151,33 +174,70 @@ int main(int argc, char *argv[])
 {
 
 	
+	//font1 = LoadFont("./font/DMSerifText.ttf");
+	
+	// BST binaryTree;
+	// maxHeap heap;
 
-	BST binaryTree;
-	maxHeap heap;
+    // heap.insertHeap(5, 40);
+	// heap.insertHeap(6, 440);
+	// heap.insertHeap(7, 410);
+	// heap.insertHeap(8, 420);
+	// heap.insertHeap(9, 430);
+	
+	
+	// heap.print();
+	
+	// binaryTree.insertRequest("test 1", 22);
+	// binaryTree.insertRequest("test 2", 2);
+	// binaryTree.insertRequest("test 3", 5);
+	// binaryTree.insertRequest("test 4", 1);
+	// binaryTree.insertRequest("test 5", 8);
+	// binaryTree.insertRequest("test 6", 6);
+	// binaryTree.insertRequest("test 7", 25);
+	// binaryTree.insertRequest("test 8", 1811);
+	// binaryTree.insertReq	uest("test 9", 14);
+	// binaryTree.insertRequest("test 10", 23);
+	// binaryTree.insertRequest("test 11", 12);
+	// binaryTree.insertRequest("test 12", 121);
+	// binaryTree.insertRequest("test 13", 31);
+	// binaryTree.insertRequest("test 14", -3);
 
-    heap.insertHeap(1, 30);
-    heap.insertHeap(2, 50);
-    heap.insertHeap(3, 20);
-    heap.insertHeap(4, 60);
-    heap.insertHeap(5, 40);
+	//GenTextureMipmaps(&font1.texture);
+	//SetTextureFilter(font1.texture, TEXTURE_FILTER_POINT);
 
-	heap.print();
+	// binaryTree.insertRequest("test 15", 0);
 
-	binaryTree.insertRequest("test 1", 22);
-	binaryTree.insertRequest("test 2", 2);
-	binaryTree.insertRequest("test 3", 5);
-	binaryTree.insertRequest("test 4", 1);
-	binaryTree.insertRequest("test 5", 8);
-	binaryTree.insertRequest("test 6", 6);
-	binaryTree.insertRequest("test 7", 25);
-	binaryTree.insertRequest("test 8", 1811);
-	binaryTree.insertRequest("test 9", 14);
-	binaryTree.insertRequest("test 10", 23);
-	binaryTree.insertRequest("test 11", 12);
-	binaryTree.insertRequest("test 12", 121);
-	binaryTree.insertRequest("test 13", 31);
-	binaryTree.insertRequest("test 14", -3);
-	binaryTree.insertRequest("test 15", 0);
+	manager man;
+	
+    // heap.insertHeap(1, 30);
+    // heap.insertHeap(2, 50);
+    // heap.insertHeap(3, 20);
+    // heap.insertHeap(4, 60);
+
+	srand(time(NULL));
+	
+	man.insertProcess("test 1", 22 , 30);
+	man.insertProcess("test 2", 2 , 50);
+	man.insertProcess("test 3", 5 , 10);
+	man.insertProcess("test 4", 1 , 60);
+	man.insertProcess("test 5", 25 , 230);
+	man.insertProcess("test 6", 10 , 130);
+	// man.insertProcess("test 7", 15 , 430);
+	// man.insertProcess("test 8", 13 , 431);
+	// man.insertProcess("test 9", 154 , 432);
+	// man.insertProcess("test 10", 152 , 433);
+	// man.insertProcess("test 11", 153 , 434);
+	// man.insertProcess("test 11", 133 , 4345);
+
+	for (int i = 0; i < 10; i++)
+	{
+		man.insertProcess("test 11", rand() % 200 , rand() % 200);
+	}
+
+	//std::cout << "deep : " << man.heap.howDeepIsThatNode(2);
+	
+	
 	// binaryTree.insertRequest("test 16", 18);
 	// binaryTree.insertRequest("test 18", 28);
 	// binaryTree.insertRequest("test 17", 29);                   // yeah....test
@@ -194,11 +254,19 @@ int main(int argc, char *argv[])
 	// binaryTree.insertRequest("test 29", 32);
 	// binaryTree.insertRequest("test 30", 41);
 
-	binaryTree.printBst();
+	man.heap.print();
 
-	std::cout << "\nbst size : " << binaryTree.getSize(binaryTree.head) << '\n';
+//	binaryTree.printBst();
+
+//	std::cout << "\nbst size : " << binaryTree.getSize(binaryTree.head) << '\n';
 
 	InitWindow(800, 800, "project");
+
+	font1 = LoadFontEx("./fonts/DMSerifText.ttf",35,0,0);
+	
+	GenTextureMipmaps(&font1.texture);
+	SetTextureFilter(font1.texture, TEXTURE_FILTER_POINT);
+
 	SetTargetFPS(60);
 
 	// Camera2D camera = { 0 };
@@ -209,30 +277,53 @@ int main(int argc, char *argv[])
 
 	while (WindowShouldClose() == false)
 	{
+
 		updateCamera();
 
 		BeginDrawing();
 		ClearBackground(WHITE);
+		//DrawText(title.c_str() , 10 , 755 , 35 , BLACK);
+		DrawTextEx(font1,title.c_str(),(Vector2){10, 755},35,2,BLACK);
 
 		
 			BeginMode2D(camera);
 			
-			nodeCollisionHelper = false;
-			binaryTree.drawBinarySearchTree(binaryTree.head);
+			if (currentTab == TAB_MAX_HEAP)
+			{
+			//	std::cerr << "\n\n";
+				man.heap.drawMaxHeap(0,0,0,pow(2,((int)(log2(man.heap.array.size())) + 1)) * 20);
+				//std::cerr << "\n\n";
+				EndMode2D();
+			}
+			else
+			{
+				nodeCollisionHelper = false;
+				man.binaryTree.drawBinarySearchTree(man.binaryTree.head);
+				
+				if (currentMode == SEARCH_MODE && IdExists)
+				man.binaryTree.searchRequstTrace(IdSearch,man.binaryTree.head,0,0);
+				panel();
+				EndMode2D();
+				drawTextField(man.binaryTree);
+			}
 			
-			if (currentMode == SEARCH_MODE && IdExists)
-			binaryTree.searchRequstTrace(IdSearch,binaryTree.head,0,0);
-			panel();
-			EndMode2D();
 			
-		drawTextField(binaryTree);
+			
 		EndDrawing();
 
 		if (pendingDeleteID != -1) 
 		{
-			binaryTree.deleteRequest(pendingDeleteID);
+			man.binaryTree.deleteRequest(pendingDeleteID);
 			pendingDeleteID = -1;
 		}
+
+		if (IsKeyPressed(KEY_M))
+		{
+			if(currentTab == TAB_BINARY_SEARCH_TREE){ currentTab = TAB_MAX_HEAP; title = "max Heap";}
+			else {currentTab = TAB_BINARY_SEARCH_TREE; title = "binary search tree";}
+		}
+		
+
 	}
 
 	return 0;

@@ -20,7 +20,7 @@ Node::Node()
 
 void BST::insertRequest(std::string name, int id)
 {
-    Node *data = new Node(name, id);
+    Node* data = new Node(name, id);
     if (head == nullptr)
     {
         head = data;
@@ -46,6 +46,8 @@ void BST::insertRequest(std::string name, int id)
     else
         before->rigthChild = data;
     data->parents = before;
+
+    std::cerr << "bst size : " << getSize(head) << '\n';
 }
 
 bool BST::isEmptyBST()
@@ -286,6 +288,9 @@ void BST::deleteRequest(int id)
 
     target->leftChild = target->rigthChild = nullptr;
     target->parents = nullptr;
+
+    //std::cerr << "bst size : " << getSize(head) << '\n';
+
     delete target;
 }
 
