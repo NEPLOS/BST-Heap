@@ -13,7 +13,7 @@ public:
     int id;
 
     Node *parents = nullptr;
-    Node *rigthChild = nullptr;
+    Node *rightChild = nullptr;
     Node *leftChild = nullptr;
 
     Node(std::string name, int id);

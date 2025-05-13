@@ -38,16 +38,16 @@ void BST::insertRequest(std::string name, int id)
         else if (temp->id < data->id)
             temp = temp->leftChild;
         else
-            temp = temp->rigthChild;
+            temp = temp->rightChild;
     }
 
     if (before->id < data->id)
         before->leftChild = data;
     else
-        before->rigthChild = data;
+        before->rightChild = data;
     data->parents = before;
 
-    std::cerr << "bst size : " << getSize(head) << '\n';
+   // std::cerr << "bst size : " << getSize(head) << '\n';
 }
 
 bool BST::isEmptyBST()
@@ -58,10 +58,10 @@ bool BST::isEmptyBST()
         return false;
 }
 
-Node *BST::searchRequst(int id)
+Node* BST::searchRequst(int id)
 {
 
-    Node *temp = head;
+    Node* temp = head;
     while (temp != nullptr)
     {
         if (temp->id == id)
@@ -69,7 +69,7 @@ Node *BST::searchRequst(int id)
         else if (id > temp->id)
             temp = temp->leftChild;
         else
-            temp = temp->rigthChild;
+            temp = temp->rightChild;
     }
 
     return temp;
@@ -96,16 +96,16 @@ void BST::searchRequstTrace(int id , Node* node , int x , int y)
         
         int rightChildDistance = 70 * (leftChildSize + 1);
         
-        if (node->rigthChild == nullptr)
+        if (node->rightChild == nullptr)
         {
             rightChildDistance = 0;
         }
         DrawLineEx((Vector2){x, y}, (Vector2){x - rightChildDistance, y + rightChildDistance},6, GREEN);
-        searchRequstTrace(id,node->rigthChild,x - rightChildDistance, y + rightChildDistance);
+        searchRequstTrace(id,node->rightChild,x - rightChildDistance, y + rightChildDistance);
     }
     else if(id > node->id)
     {
-        int rightChildSize = getSize(node->rigthChild);
+        int rightChildSize = getSize(node->rightChild);
         int leftChildDistance = 70 * (rightChildSize + 1);
     
         if (node->leftChild == nullptr)
@@ -126,7 +126,7 @@ int BST::getSize(Node *node)
         return 0;
     }
 
-    return getSize(node->rigthChild) + getSize(node->leftChild) + 1;
+    return getSize(node->rightChild) + getSize(node->leftChild) + 1;
 }
 
 int BST::drawUpToRoot(Node *node, int x, int y)
@@ -141,7 +141,7 @@ int BST::drawUpToRoot(Node *node, int x, int y)
     int distance_y = 0;
     if (temp->leftChild == node)
     {
-        distance = 70 * (getSize(temp->rigthChild) + 1);
+        distance = 70 * (getSize(temp->rightChild) + 1);
         distance_y = distance;
         distance *= -1;
     }
@@ -158,14 +158,13 @@ int BST::drawUpToRoot(Node *node, int x, int y)
 void BST::drawBinarySearchTree(Node *node, int x, int y)
 {
  
-
     if (node == nullptr)
     {
         return;
     }
 
     int leftChildSize = getSize(node->leftChild);
-    int rightChildSize = getSize(node->rigthChild);
+    int rightChildSize = getSize(node->rightChild);
 
     int rightChildDistance = 70 * (leftChildSize + 1);
     int leftChildDistance = 70 * (rightChildSize + 1);
@@ -175,7 +174,7 @@ void BST::drawBinarySearchTree(Node *node, int x, int y)
         leftChildDistance = 0;
     }
 
-    if (node->rigthChild == nullptr)
+    if (node->rightChild == nullptr)
     {
         rightChildDistance = 0;
     }
@@ -190,7 +189,6 @@ void BST::drawBinarySearchTree(Node *node, int x, int y)
             deleteRequest(node->id);
             return;
         }
-        
         
         lvl = drawUpToRoot(node, x, y);
         nodeCollisionHelper = true;
@@ -212,7 +210,7 @@ void BST::drawBinarySearchTree(Node *node, int x, int y)
     std::string nameLabel = node->name;
     DrawText(label.c_str(), x - MeasureText(label.c_str(), 15) / 2, y - 13, 15, BLACK);
     DrawText(nameLabel.c_str(), x - MeasureText(nameLabel.c_str(), 15) / 2, y + 3, 15, DARKGRAY);
-    drawBinarySearchTree(node->rigthChild, x - rightChildDistance, y + rightChildDistance);
+    drawBinarySearchTree(node->rightChild, x - rightChildDistance, y + rightChildDistance);
     drawBinarySearchTree(node->leftChild, x + leftChildDistance, y + leftChildDistance);
 
 
@@ -230,7 +228,7 @@ void BST::transplant(Node *oldNode, Node *newNode)
     }
     else
     {
-        oldNode->parents->rigthChild = newNode;
+        oldNode->parents->rightChild = newNode;
     }
 
     if (newNode != nullptr)
@@ -258,23 +256,23 @@ void BST::deleteRequest(int id)
 
     if (target->leftChild == nullptr)
     {
-        transplant(target, target->rigthChild);
+        transplant(target, target->rightChild);
     }
-    else if (target->rigthChild == nullptr)
+    else if (target->rightChild == nullptr)
     {
         transplant(target, target->leftChild);
     }
     else
     {
-        Node* minNode = getMinimumNode(target->rigthChild);
+        Node* minNode = getMinimumNode(target->rightChild);
 
         if (minNode->parents != target)
         {
-            transplant(minNode, minNode->rigthChild);
-            minNode->rigthChild = target->rigthChild;
-            if (minNode->rigthChild)
+            transplant(minNode, minNode->rightChild);
+            minNode->rightChild = target->rightChild;
+            if (minNode->rightChild)
             {
-                minNode->rigthChild->parents = minNode;
+                minNode->rightChild->parents = minNode;
             }
         }
 
@@ -286,7 +284,7 @@ void BST::deleteRequest(int id)
         }
     }
 
-    target->leftChild = target->rigthChild = nullptr;
+    target->leftChild = target->rightChild = nullptr;
     target->parents = nullptr;
 
     //std::cerr << "bst size : " << getSize(head) << '\n';
@@ -305,7 +303,7 @@ void BST::print(Node *n)
     if (n == nullptr)
         return;
 
-    print(n->rigthChild);
     std::cout << "[" << n->id << ',' << n->name << "] ";
     print(n->leftChild);
+    print(n->rightChild);
 }
