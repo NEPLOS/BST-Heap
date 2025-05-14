@@ -30,6 +30,7 @@ class maxHeap
     int getLeftChild(int index);
     int getParent(int index);
     void deleteMaxHeap();
+    void increasePriority(int id , int newPriority);
     void heapifyUp(int index);
     void print();
     int maxchild(int index);

@@ -38,7 +38,7 @@ enum Tab
 enum Mode
 {
 	INSERT_MODE,
-	DELETE_MODE,
+	INCREASE_PRIORITY_MODE,
 	SEARCH_MODE,
 };
 
@@ -68,6 +68,13 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 		{
 			nameField.setVisible(true);
 			priorityField.setVisible(true);
+
+		}
+		else if(currentMode == INCREASE_PRIORITY_MODE)
+		{
+			nameField.setVisible(false);
+			priorityField.setVisible(true);
+			//idField.setVisible(true);
 		}
 		else
 		{
@@ -116,9 +123,10 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 			binaryTree.insertRequest(nameField.input, targetID);
 			heap.insertHeap(targetID,priorityField.inputToNumber());
 			break;
-		case DELETE_MODE:
+		case INCREASE_PRIORITY_MODE:
 			// std::cerr << "target : " << targetID << '\n';
-			pendingDeleteID = targetID;
+			//pendingDeleteID = targetID;
+			heap.increasePriority(targetID,priorityField.inputToNumber());
 			break;
 		default:
 			break;
@@ -134,9 +142,9 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 		// DrawText("insert mode" , 5 , 5 , 35 , BLACK);
 		title = "insert mode";
 		break;
-	case DELETE_MODE:
+	case INCREASE_PRIORITY_MODE:
 		// DrawText("delete mode" , 5 , 5 , 35 , BLACK);
-		title = "delete mode";
+		title = "increase priority mode";
 		break;
 	default:
 		title = "search mode";
@@ -275,6 +283,12 @@ int main(int argc, char *argv[])
 			man.binaryTree.deleteRequest(pendingDeleteID);
 			pendingDeleteID = -1;
 		}
+
+		// if (IsKeyDown(KEY_A))
+		// {
+		// 	man.heap.increasePriority(22,50);
+		// }
+		
 
 		if (IsKeyPressed(KEY_M))
 		{

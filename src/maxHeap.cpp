@@ -149,6 +149,21 @@ int maxHeap::getDepth(int index)
     }
     return depth;
 }
+
+void maxHeap::increasePriority(int id , int newPriority)
+{
+    for (int i = 0; i < array.size(); i++)
+    {
+        if (array[i].id == id)
+        {
+            array[i].priority = newPriority;
+            heapifyUp(i);
+            break;
+        }
+        
+    }
+    
+}
     
 
 void maxHeap::print()
