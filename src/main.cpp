@@ -101,11 +101,15 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 			IdExists = false;
 		}
 	}
+	
+	//DrawText("id : " , 580 , 35 , 25 , BLACK);
 	idField.drawTextField();
 
+	//DrawText("name : " , 540 , 85 , 25 , BLACK);
 	nameField.drawTextField();
 	nameField.handleInput();
 
+	//DrawText("priority : " , 505 , 135 , 25 , BLACK);
 	priorityField.drawTextField();
 	priorityField.handleInput();
 	
@@ -140,13 +144,22 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 	case INSERT_MODE:
 		// binaryTree.insertRequest(nameField.input, targetID);
 		// DrawText("insert mode" , 5 , 5 , 35 , BLACK);
+		DrawText("id : " , 580 , 35 , 25 , BLACK);
+		DrawText("name : " , 540 , 85 , 25 , BLACK);
+		DrawText("priority : " , 505 , 135 , 25 , BLACK);
+		
 		title = "insert mode";
 		break;
 	case INCREASE_PRIORITY_MODE:
 		// DrawText("delete mode" , 5 , 5 , 35 , BLACK);
+		DrawText("id : " , 580 , 35 , 25 , BLACK);
+		//DrawText("name : " , 540 , 85 , 25 , BLACK);
+		DrawText("priority : " , 505 , 135 , 25 , BLACK);
+
 		title = "increase priority mode";
 		break;
 	default:
+		DrawText("id : " , 580 , 35 , 25 , BLACK);
 		title = "search mode";
 		// DrawText("search mode" , 5 , 5 , 35 , BLACK);
 		break;
@@ -290,7 +303,7 @@ int main(int argc, char *argv[])
 		// }
 		
 
-		if (IsKeyPressed(KEY_M))
+		if (IsKeyPressed(KEY_Q))
 		{
 			if (currentTab == TAB_BINARY_SEARCH_TREE)
 			{
