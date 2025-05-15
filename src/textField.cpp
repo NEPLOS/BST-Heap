@@ -62,7 +62,6 @@ void textField::drawTextField()
 	if (mouseOnText) DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, RED);
 	else DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, DARKGRAY);
 
-	//DrawTextPro(font1,label.c_str(),(Vector2){7 + rectangleX, rectangleY + 15},{0,0},0,15,0,BLACK);
 	DrawText(input.c_str(), (int)textBox.x + 5, (int)textBox.y + 4, 38, MAROON);
 }
 int textField::inputToNumber()

@@ -23,11 +23,7 @@ button phpr((Rectangle){675,750,100,25} , "phpr" , 20);
 std::string title = "binary search tree";
 int pendingDeleteID = -1;
 
-
-
-// textField 
-
-Font font1; // = LoadFontEx("./font/2.ttf",35,0,0);
+Font font1;
 
 enum Tab
 {
@@ -46,14 +42,6 @@ Mode currentMode = INSERT_MODE;
 Tab currentTab = TAB_BINARY_SEARCH_TREE;
 bool IdExists = false;
 int IdSearch;
-
-void drawFieldMaxHeap()
-{
-	// submitButtononclick()
-	// {
-
-	// }
-}
 
 void drawTextField(BST &binaryTree , maxHeap& heap)
 {
@@ -74,7 +62,6 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 		{
 			nameField.setVisible(false);
 			priorityField.setVisible(true);
-			//idField.setVisible(true);
 		}
 		else
 		{
@@ -102,14 +89,10 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 		}
 	}
 	
-	//DrawText("id : " , 580 , 35 , 25 , BLACK);
 	idField.drawTextField();
-
-	//DrawText("name : " , 540 , 85 , 25 , BLACK);
 	nameField.drawTextField();
 	nameField.handleInput();
 
-	//DrawText("priority : " , 505 , 135 , 25 , BLACK);
 	priorityField.drawTextField();
 	priorityField.handleInput();
 	
@@ -123,13 +106,11 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 		switch (currentMode)
 		{
 		case INSERT_MODE:
-			// std::cout << targetID << '\n';
 			binaryTree.insertRequest(nameField.input, targetID);
 			heap.insertHeap(targetID,priorityField.inputToNumber());
 			break;
+
 		case INCREASE_PRIORITY_MODE:
-			// std::cerr << "target : " << targetID << '\n';
-			//pendingDeleteID = targetID;
 			heap.increasePriority(targetID,priorityField.inputToNumber());
 			break;
 		default:
@@ -142,26 +123,21 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 	switch (currentMode)
 	{
 	case INSERT_MODE:
-		// binaryTree.insertRequest(nameField.input, targetID);
-		// DrawText("insert mode" , 5 , 5 , 35 , BLACK);
 		DrawText("id : " , 580 , 35 , 25 , BLACK);
 		DrawText("name : " , 540 , 85 , 25 , BLACK);
 		DrawText("priority : " , 505 , 135 , 25 , BLACK);
-		
 		title = "insert mode";
 		break;
-	case INCREASE_PRIORITY_MODE:
-		// DrawText("delete mode" , 5 , 5 , 35 , BLACK);
-		DrawText("id : " , 580 , 35 , 25 , BLACK);
-		//DrawText("name : " , 540 , 85 , 25 , BLACK);
-		DrawText("priority : " , 505 , 135 , 25 , BLACK);
 
+	case INCREASE_PRIORITY_MODE:
+		DrawText("id : " , 580 , 35 , 25 , BLACK);
+		DrawText("priority : " , 505 , 135 , 25 , BLACK);
 		title = "increase priority mode";
 		break;
+
 	default:
 		DrawText("id : " , 580 , 35 , 25 , BLACK);
 		title = "search mode";
-		// DrawText("search mode" , 5 , 5 , 35 , BLACK);
 		break;
 	}
 
@@ -173,7 +149,6 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 	{
 		heap.processHighestPriorityRequest(&binaryTree);
 	}
-	// title;
 }
 
 void panel()
@@ -183,15 +158,11 @@ void panel()
 		int rectangleX = GetScreenToWorld2D(GetMousePosition(), camera).x;
 		int rectangleY = GetScreenToWorld2D(GetMousePosition(), camera).y;
 
-		// int rectangleX = GetMousePosition().x;
-		// int rectangleY = GetMousePosition().y;
-
 		std::string label = "id : " + std::to_string(collisionNode->id);
 		std::string nameLabel = "name : " + collisionNode->name;
 		std::string nodeLevel = "lvl : " + std::to_string(lvl);
 		DrawRectangleV((Vector2){rectangleX, rectangleY}, (Vector2){130, 100}, GRAY);
 		DrawRectangleLinesEx((Rectangle){rectangleX, rectangleY, 130, 100}, 4, BLACK);
-		// DrawTextPro(font1,label.c_str(),(Vector2){7 + rectangleX, rectangleY + 15},{0,0},0,15,0,BLACK);
 		DrawText(label.c_str(), 7 + rectangleX, rectangleY + 15, 15, BLACK);
 		DrawText(nameLabel.c_str(), 7 + rectangleX, rectangleY + 31, 15, BLACK);
 		DrawText(nodeLevel.c_str(), 7 + rectangleX, rectangleY + 47, 15, BLACK);
@@ -235,11 +206,6 @@ int main(int argc, char *argv[])
 	man.insertProcess("test 11", 153, 12);
 	man.insertProcess("test 11", 133, 20);
 
-	// for (int i = 0; i < 10; i++)
-	// {
-	// 	man.insertProcess("test 11", rand() % 200 , rand() % 200);
-	// }
-
 	man.heap.print();
 
 	InitWindow(800, 800, "project");
@@ -253,10 +219,6 @@ int main(int argc, char *argv[])
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
 
-	//man.binaryTree.printBst();
-
-	//man.heap.print();
-
 	while (WindowShouldClose() == false)
 	{
 
@@ -264,15 +226,12 @@ int main(int argc, char *argv[])
 
 		BeginDrawing();
 		ClearBackground(WHITE);
-		// DrawText(title.c_str() , 10 , 755 , 35 , BLACK);
 		
 		BeginMode2D(camera);
 		
 		if (currentTab == TAB_MAX_HEAP)
 		{
-			//	std::cerr << "\n\n";
 			man.heap.drawMaxHeap(0, 0, 0, pow(2, ((int)(log2(man.heap.array.size())) + 1)) * 20);
-			// std::cerr << "\n\n";
 			EndMode2D();
 		}
 		else
@@ -296,11 +255,6 @@ int main(int argc, char *argv[])
 			man.binaryTree.deleteRequest(pendingDeleteID);
 			pendingDeleteID = -1;
 		}
-
-		// if (IsKeyDown(KEY_A))
-		// {
-		// 	man.heap.increasePriority(22,50);
-		// }
 		
 
 		if (IsKeyPressed(KEY_Q))
@@ -316,6 +270,21 @@ int main(int argc, char *argv[])
 				title = "binary search tree";
 			}
 		}
+
+		if (IsKeyPressed(KEY_P))
+		{
+			if (currentTab == TAB_BINARY_SEARCH_TREE)
+			{
+				std::cout << "binary search tree : ";
+				man.binaryTree.printBst();
+			}
+			else
+			{
+				std::cout << "max heap : ";
+				man.heap.print();
+			}
+		}
+		
 	}
 
 	return 0;

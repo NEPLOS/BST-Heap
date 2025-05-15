@@ -10,7 +10,6 @@ struct maxHeapData
 {
     int id;
     int priority;
-   // maxHeapData(int id , int priority);
 };
 
 class maxHeap

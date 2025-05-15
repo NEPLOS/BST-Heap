@@ -33,22 +33,22 @@ void BST::insertRequest(std::string name, int id)
     {
         before = temp;
 
-        if(temp->id == id)
+        if (temp->id == id)
             return;
-        else if (temp->id < data->id)
+        else if (data->id < temp->id)
             temp = temp->leftChild;
         else
             temp = temp->rightChild;
     }
 
-    if (before->id < data->id)
+    if (data->id < before->id)
         before->leftChild = data;
     else
         before->rightChild = data;
-    data->parents = before;
 
-   // std::cerr << "bst size : " << getSize(head) << '\n';
+    data->parents = before;
 }
+
 
 bool BST::isEmptyBST()
 {
@@ -66,7 +66,7 @@ Node* BST::searchRequst(int id)
     {
         if (temp->id == id)
             return temp;
-        else if (id > temp->id)
+        else if (temp->id > id)
             temp = temp->leftChild;
         else
             temp = temp->rightChild;
@@ -82,14 +82,11 @@ void BST::searchRequstTrace(int id , Node* node , int x , int y)
         return;
     }
 
-    //std::cout << node->id << "\n";
-
     if (id == node->id)
     {
-      //  std::cerr << "found it\n";
         DrawCircleLines(x,y,20,BLACK);
     }
-    else if (id < node->id)
+    else if (id > node->id)
     {
 
         int leftChildSize = getSize(node->leftChild);
@@ -100,10 +97,10 @@ void BST::searchRequstTrace(int id , Node* node , int x , int y)
         {
             rightChildDistance = 0;
         }
-        DrawLineEx((Vector2){x, y}, (Vector2){x - rightChildDistance, y + rightChildDistance},6, GREEN);
-        searchRequstTrace(id,node->rightChild,x - rightChildDistance, y + rightChildDistance);
+        DrawLineEx((Vector2){x, y}, (Vector2){x + rightChildDistance, y + rightChildDistance},6, GREEN);
+        searchRequstTrace(id,node->rightChild,x + rightChildDistance, y + rightChildDistance);
     }
-    else if(id > node->id)
+    else if(id < node->id)
     {
         int rightChildSize = getSize(node->rightChild);
         int leftChildDistance = 70 * (rightChildSize + 1);
@@ -112,8 +109,8 @@ void BST::searchRequstTrace(int id , Node* node , int x , int y)
         {
             leftChildDistance = 0;
         }
-        DrawLineEx((Vector2){x, y}, (Vector2){x + leftChildDistance, y + leftChildDistance}, 6, GREEN);
-        searchRequstTrace(id,node->leftChild,x + leftChildDistance, y + leftChildDistance);
+        DrawLineEx((Vector2){x, y}, (Vector2){x - leftChildDistance, y + leftChildDistance}, 6, GREEN);
+        searchRequstTrace(id,node->leftChild,x - leftChildDistance, y + leftChildDistance);
     }
     
 
@@ -143,12 +140,12 @@ int BST::drawUpToRoot(Node *node, int x, int y)
     {
         distance = 70 * (getSize(temp->rightChild) + 1);
         distance_y = distance;
-        distance *= -1;
     }
     else
     {
         distance = 70 * (getSize(temp->leftChild) + 1);
         distance_y = distance;
+        distance *= -1;
     }
 
     DrawLineEx((Vector2){x, y}, (Vector2){x + distance, y - distance_y}, 10, RED);
@@ -179,8 +176,8 @@ void BST::drawBinarySearchTree(Node *node, int x, int y)
         rightChildDistance = 0;
     }
 
-    DrawLineEx((Vector2){x, y}, (Vector2){x + leftChildDistance, y + leftChildDistance}, 5, BLACK);
-    DrawLineEx((Vector2){x, y}, (Vector2){x - rightChildDistance, y + rightChildDistance}, 5, BLACK);
+    DrawLineEx((Vector2){x, y}, (Vector2){x - leftChildDistance, y + leftChildDistance}, 5, BLACK);
+    DrawLineEx((Vector2){x, y}, (Vector2){x + rightChildDistance, y + rightChildDistance}, 5, BLACK);
 
     if (CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera), (Vector2){x, y}, 40))
     {
@@ -210,8 +207,8 @@ void BST::drawBinarySearchTree(Node *node, int x, int y)
     std::string nameLabel = node->name;
     DrawText(label.c_str(), x - MeasureText(label.c_str(), 15) / 2, y - 13, 15, BLACK);
     DrawText(nameLabel.c_str(), x - MeasureText(nameLabel.c_str(), 15) / 2, y + 3, 15, DARKGRAY);
-    drawBinarySearchTree(node->rightChild, x - rightChildDistance, y + rightChildDistance);
-    drawBinarySearchTree(node->leftChild, x + leftChildDistance, y + leftChildDistance);
+    drawBinarySearchTree(node->rightChild, x + rightChildDistance, y + rightChildDistance);
+    drawBinarySearchTree(node->leftChild, x - leftChildDistance, y + leftChildDistance);
 
 
 }
@@ -286,8 +283,6 @@ void BST::deleteRequest(int id)
 
     target->leftChild = target->rightChild = nullptr;
     target->parents = nullptr;
-
-    //std::cerr << "bst size : " << getSize(head) << '\n';
 
     delete target;
 }

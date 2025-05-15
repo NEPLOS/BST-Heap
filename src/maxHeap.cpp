@@ -1,14 +1,6 @@
 
 #include "./maxHeap.h"
 
-// struct maxHeapData
-// {
-//     int id;
-//     int priority;
-// };
-
-
-
 maxHeap::maxHeap()
 {
     array.clear();
@@ -97,14 +89,6 @@ void maxHeap::drawMaxHeap(int index , int x , int y, int distance)
         return ;
     }
 
-    // int distance = 100;// = array.size() * 70;
-    // //int distance = getDepth(index);
-    // //distance = (250 * (maxchild(index) + 1 )) / (distance + 1);
-
-    // distance = ((int)(log2(array.size())) + 1)  / (getDepth(index) + 1);// / log2(array.size() + 1);
-
-    // distance = distance * 2;
-
     if (getRightChild(index) < array.size())
     {
         DrawLineEx((Vector2){x, y}, (Vector2){(x + distance), (y + distance)}, 5, BLACK);
@@ -121,7 +105,6 @@ void maxHeap::drawMaxHeap(int index , int x , int y, int distance)
     DrawCircle(x,y,40,ORANGE);
     DrawText(std::to_string(array[index].priority).c_str(), x - MeasureText(std::to_string(array[index].priority).c_str(), 15) / 2, y - 13, 15, BLACK);
     DrawText(std::to_string(array[index].id).c_str(), x - MeasureText(std::to_string(array[index].id).c_str(), 15) / 2, y + 3, 15, DARKGRAY);
-  //  std::cerr << "[" << array[index].id << ',' << array[index].priority << "]" << '\n';
 
     drawMaxHeap(getLeftChild(index) ,  (x - distance) , (y + distance) , distance/2 );
     drawMaxHeap(getRightChild(index) , (x + distance) , (y + distance) , distance/2 );
