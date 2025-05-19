@@ -194,17 +194,17 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 
 	man.insertProcess("test 1", 22, 30);
-	man.insertProcess("test 2", 2, 50);
-	man.insertProcess("test 3", 5, 10);
-	man.insertProcess("test 4", 1, 60);
-	man.insertProcess("test 5", 25, 230);
-	man.insertProcess("test 6", 10, 130);
-	man.insertProcess("test 7", 15, 30);
-	man.insertProcess("test 8", 13, 41);
-	man.insertProcess("test 9", 154, 42);
-	man.insertProcess("test 10", 152, 433);
-	man.insertProcess("test 11", 153, 12);
-	man.insertProcess("test 11", 133, 20);
+	man.insertProcess("test 1", 2, 50);
+	man.insertProcess("test 2", 5, 10);
+	man.insertProcess("test 3", 3, 60);
+	man.insertProcess("test 4", 25, 230);
+	man.insertProcess("test 5", 10, 130);
+	man.insertProcess("test 6", 15, 30);
+	man.insertProcess("test 7", 13, 41);
+	man.insertProcess("test 8", 154, 42);
+	// man.insertProcess("test 9", 152, 433);
+	// man.insertProcess("test 10", 153, 12);
+	// man.insertProcess("test 11", 133, 20);
 
 	man.heap.print();
 

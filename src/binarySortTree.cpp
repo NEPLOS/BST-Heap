@@ -6,6 +6,9 @@ extern bool nodeCollisionHelper;
 extern Node* collisionNode;
 extern int lvl;
 
+Node* holdingNode = nullptr;
+bool holdingSomething = false;
+
 Node::Node(std::string name, int id)
 {
     this->name = name;
@@ -18,17 +21,45 @@ Node::Node()
     id = -1;
 }
 
+void BST::recalcuteCoordinates(Node* node , int x , int y)
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+    
+    node->coordinate.x = x;
+    node->coordinate.y = y;
+    int leftChildSize = getSize(node->leftChild);
+    int rightChildSize = getSize(node->rightChild);
+
+    int rightChildDistance = 70 * (leftChildSize + 1);
+    int leftChildDistance = 70 * (rightChildSize + 1);
+
+    recalcuteCoordinates(node->leftChild  , x - leftChildDistance, y + leftChildDistance);
+    recalcuteCoordinates(node->rightChild , x + rightChildDistance, y + rightChildDistance);
+
+}
+
 void BST::insertRequest(std::string name, int id)
 {
     Node* data = new Node(name, id);
     if (head == nullptr)
     {
         head = data;
+        head->coordinate.x = 0;
+        head->coordinate.y = 0;
         return;
     }
 
     Node *before = nullptr;
     Node *temp = head;
+
+    int sizeX = 0;
+    int sizeY = 0;
+
+    std::cerr << "test 0";
+
     while (temp != nullptr)
     {
         before = temp;
@@ -39,14 +70,19 @@ void BST::insertRequest(std::string name, int id)
             temp = temp->leftChild;
         else
             temp = temp->rightChild;
+        
     }
 
     if (data->id < before->id)
         before->leftChild = data;
+
     else
         before->rightChild = data;
 
+    
     data->parents = before;
+
+    recalcuteCoordinates(head,0,0);
 }
 
 
@@ -126,7 +162,7 @@ int BST::getSize(Node *node)
     return getSize(node->rightChild) + getSize(node->leftChild) + 1;
 }
 
-int BST::drawUpToRoot(Node *node, int x, int y)
+int BST::drawUpToRoot(Node *node , int x, int y)
 {
     if (node == nullptr || node->parents == nullptr)
     {
@@ -152,7 +188,7 @@ int BST::drawUpToRoot(Node *node, int x, int y)
     return 1 + drawUpToRoot(temp, x + distance, y - distance_y);
 }
 
-void BST::drawBinarySearchTree(Node *node, int x, int y)
+void BST::drawBinarySearchTree(Node *node)
 {
  
     if (node == nullptr)
@@ -160,55 +196,65 @@ void BST::drawBinarySearchTree(Node *node, int x, int y)
         return;
     }
 
-    int leftChildSize = getSize(node->leftChild);
-    int rightChildSize = getSize(node->rightChild);
-
-    int rightChildDistance = 70 * (leftChildSize + 1);
-    int leftChildDistance = 70 * (rightChildSize + 1);
-
-    if (node->leftChild == nullptr)
+    if (node->leftChild != nullptr)
     {
-        leftChildDistance = 0;
+        DrawLineEx((Vector2){node->coordinate.x, node->coordinate.y}, (Vector2){node->leftChild->coordinate.x, node->leftChild->coordinate.y}, 5, BLACK);
     }
 
-    if (node->rightChild == nullptr)
+    if (node->rightChild != nullptr)
     {
-        rightChildDistance = 0;
+        DrawLineEx((Vector2){node->coordinate.x, node->coordinate.y}, (Vector2){node->rightChild->coordinate.x, node->rightChild->coordinate.y}, 5, BLACK);
     }
-
-    DrawLineEx((Vector2){x, y}, (Vector2){x - leftChildDistance, y + leftChildDistance}, 5, BLACK);
-    DrawLineEx((Vector2){x, y}, (Vector2){x + rightChildDistance, y + rightChildDistance}, 5, BLACK);
-
-    if (CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera), (Vector2){x, y}, 40))
+    
+    if ( CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera) , Vector2{node->coordinate.x,node->coordinate.y} , 40) && IsMouseButtonDown(MOUSE_BUTTON_LEFT) && (holdingNode == node || holdingNode == nullptr))
     {
-        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+        holdingNode = node;
+        node->coordinate = GetScreenToWorld2D(GetMousePosition(), camera);
+
+        if (holdingSomething == false)
         {
-            deleteRequest(node->id);
-            return;
+            holdingNode = node;
         }
         
-        lvl = drawUpToRoot(node, x, y);
-        nodeCollisionHelper = true;
-        collisionNode = node;
-
-    }
-
-    DrawCircle(x, y, 43, BLACK);
-    if (node->parents == nullptr)
-    {
-        DrawCircle(x, y, 40, GOLD);
+        holdingSomething = true;
     }
     else
     {
-        DrawCircle(x, y, 40, ORANGE);
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) == true)
+        {
+            if (holdingSomething == true && node == holdingNode)
+            {
+                holdingNode = node;
+                node->coordinate = GetScreenToWorld2D(GetMousePosition(), camera);
+            }
+        }
+        else
+        {
+            holdingSomething = false;
+            holdingNode = nullptr;
+        }
     }
+    
+    
+    
+    DrawCircle(node->coordinate.x, node->coordinate.y, 43, BLACK);
+    
+    if (node->parents == nullptr)
+    {
+        DrawCircle(node->coordinate.x, node->coordinate.y, 40, GOLD);
+    }
+    else
+    {
+        DrawCircle(node->coordinate.x, node->coordinate.y, 40, ORANGE);
+    }
+    
     
     std::string label = std::to_string(node->id);
     std::string nameLabel = node->name;
-    DrawText(label.c_str(), x - MeasureText(label.c_str(), 15) / 2, y - 13, 15, BLACK);
-    DrawText(nameLabel.c_str(), x - MeasureText(nameLabel.c_str(), 15) / 2, y + 3, 15, DARKGRAY);
-    drawBinarySearchTree(node->rightChild, x + rightChildDistance, y + rightChildDistance);
-    drawBinarySearchTree(node->leftChild, x - leftChildDistance, y + leftChildDistance);
+    DrawText(label.c_str(), node->coordinate.x - MeasureText(label.c_str(), 15) / 2,  node->coordinate.y - 13, 15, BLACK);
+    DrawText(nameLabel.c_str(), node->coordinate.x - MeasureText(nameLabel.c_str(), 15) / 2,  node->coordinate.y + 3, 15, DARKGRAY);
+    drawBinarySearchTree(node->rightChild);
+    drawBinarySearchTree(node->leftChild);
 
 
 }
@@ -285,6 +331,7 @@ void BST::deleteRequest(int id)
     target->parents = nullptr;
 
     delete target;
+    recalcuteCoordinates(head,0,0);
 }
 
 void BST::printBst()

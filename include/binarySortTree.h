@@ -11,6 +11,7 @@ class Node
 public:
     std::string name;
     int id;
+    Vector2 coordinate;
 
     Node *parents = nullptr;
     Node *rightChild = nullptr;
@@ -33,7 +34,8 @@ public:
     Node *searchRequst(int id);
     void searchRequstTrace(int id , Node* node , int x , int y);
     int getSize(Node *node);
-    void drawBinarySearchTree(Node* node, int x = 0 , int y = 0);
+    void drawBinarySearchTree(Node* node);
+    void recalcuteCoordinates(Node* node , int x = 0, int y = 0);
     Node* getMinimumNode(Node* starter);
     int drawUpToRoot(Node* node , int x , int y);
     void printBst();
