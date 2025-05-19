@@ -37,7 +37,7 @@ public:
     void drawBinarySearchTree(Node* node);
     void recalcuteCoordinates(Node* node , int x = 0, int y = 0);
     Node* getMinimumNode(Node* starter);
-    int drawUpToRoot(Node* node , int x , int y);
+    int drawUpToRoot(Node* node);
     void printBst();
 
 private:

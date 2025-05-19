@@ -58,8 +58,6 @@ void BST::insertRequest(std::string name, int id)
     int sizeX = 0;
     int sizeY = 0;
 
-    std::cerr << "test 0";
-
     while (temp != nullptr)
     {
         before = temp;
@@ -125,28 +123,22 @@ void BST::searchRequstTrace(int id , Node* node , int x , int y)
     else if (id > node->id)
     {
 
-        int leftChildSize = getSize(node->leftChild);
-        
-        int rightChildDistance = 70 * (leftChildSize + 1);
-        
-        if (node->rightChild == nullptr)
+        if (node->rightChild)
         {
-            rightChildDistance = 0;
+            DrawLineEx((Vector2){node->coordinate.x, node->coordinate.y}, (Vector2){node->rightChild->coordinate.x, node->rightChild->coordinate.y},6, GREEN);
         }
-        DrawLineEx((Vector2){x, y}, (Vector2){x + rightChildDistance, y + rightChildDistance},6, GREEN);
-        searchRequstTrace(id,node->rightChild,x + rightChildDistance, y + rightChildDistance);
+        
+        searchRequstTrace(id,node->rightChild,node->rightChild->coordinate.x, node->rightChild->coordinate.y);
     }
     else if(id < node->id)
     {
-        int rightChildSize = getSize(node->rightChild);
-        int leftChildDistance = 70 * (rightChildSize + 1);
-    
-        if (node->leftChild == nullptr)
+
+        if (node->leftChild)
         {
-            leftChildDistance = 0;
+            DrawLineEx((Vector2){node->coordinate.x, node->coordinate.y}, (Vector2){node->leftChild->coordinate.x, node->leftChild->coordinate.y},6, GREEN);
         }
-        DrawLineEx((Vector2){x, y}, (Vector2){x - leftChildDistance, y + leftChildDistance}, 6, GREEN);
-        searchRequstTrace(id,node->leftChild,x - leftChildDistance, y + leftChildDistance);
+        
+        searchRequstTrace(id,node->leftChild,node->leftChild->coordinate.x, node->leftChild->coordinate.y);
     }
     
 
@@ -162,30 +154,30 @@ int BST::getSize(Node *node)
     return getSize(node->rightChild) + getSize(node->leftChild) + 1;
 }
 
-int BST::drawUpToRoot(Node *node , int x, int y)
+int BST::drawUpToRoot(Node *node)
 {
     if (node == nullptr || node->parents == nullptr)
     {
         return 0;
     }
 
-    Node *temp = node->parents;
-    int distance = 0;
-    int distance_y = 0;
-    if (temp->leftChild == node)
-    {
-        distance = 70 * (getSize(temp->rightChild) + 1);
-        distance_y = distance;
-    }
-    else
-    {
-        distance = 70 * (getSize(temp->leftChild) + 1);
-        distance_y = distance;
-        distance *= -1;
-    }
+    // Node *temp = node->parents;
+    // int distance = 0;
+    // int distance_y = 0;
+    // if (temp->leftChild == node)
+    // {
+    //     distance = 70 * (getSize(temp->rightChild) + 1);
+    //     distance_y = distance;
+    // }
+    // else
+    // {
+    //     distance = 70 * (getSize(temp->leftChild) + 1);
+    //     distance_y = distance;
+    //     distance *= -1;
+    // }
 
-    DrawLineEx((Vector2){x, y}, (Vector2){x + distance, y - distance_y}, 10, RED);
-    return 1 + drawUpToRoot(temp, x + distance, y - distance_y);
+    DrawLineEx((Vector2){node->coordinate.x, node->coordinate.y}, (Vector2){node->parents->coordinate.x , node->parents->coordinate.y}, 10, RED);
+    return 1 + drawUpToRoot(node->parents);
 }
 
 void BST::drawBinarySearchTree(Node *node)
@@ -210,6 +202,7 @@ void BST::drawBinarySearchTree(Node *node)
     {
         collisionNode = node;
         nodeCollisionHelper = true;
+        drawUpToRoot(node);
     }
     
     
