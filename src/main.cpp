@@ -18,11 +18,12 @@ textField priorityField((Rectangle){620, 130, 160, 40});
 button submitButton((Rectangle){675, 180, 105, 25}, "submit", 18);
 button changeMode((Rectangle){675, 210, 105, 25}, "change mode", 15);
 
+button resetCoordinates((Rectangle){675 , 705 , 100 , 25} , "reset" , 20);
 button phpr((Rectangle){675,750,100,25} , "phpr" , 20);
 
 std::string title = "binary search tree";
 int pendingDeleteID = -1;
-
+bool panelOfforOn = true;
 Font font1;
 
 enum Tab
@@ -100,6 +101,8 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 
 	changeMode.drawButton();
 
+	resetCoordinates.drawButton();
+
 	if (submitButton.onclick())
 	{
 		int targetID = idField.inputToNumber();
@@ -149,11 +152,17 @@ void drawTextField(BST &binaryTree , maxHeap& heap)
 	{
 		heap.processHighestPriorityRequest(&binaryTree);
 	}
+
+	if(resetCoordinates.onclick())
+	{
+		binaryTree.recalcuteCoordinates(binaryTree.head , 0 , 0);
+	}
 }
 
 void panel()
 {
-	if (nodeCollisionHelper == true && collisionNode != nullptr)
+
+	if (nodeCollisionHelper == true && collisionNode != nullptr && panelOfforOn)
 	{
 		int rectangleX = GetScreenToWorld2D(GetMousePosition(), camera).x;
 		int rectangleY = GetScreenToWorld2D(GetMousePosition(), camera).y;
@@ -202,9 +211,6 @@ int main(int argc, char *argv[])
 	man.insertProcess("test 6", 15, 30);
 	man.insertProcess("test 7", 13, 41);
 	man.insertProcess("test 8", 154, 42);
-	// man.insertProcess("test 9", 152, 433);
-	// man.insertProcess("test 10", 153, 12);
-	// man.insertProcess("test 11", 133, 20);
 
 	man.heap.print();
 
@@ -284,6 +290,12 @@ int main(int argc, char *argv[])
 				man.heap.print();
 			}
 		}
+
+		if (IsKeyPressed(KEY_O))
+		{
+			panelOfforOn = !panelOfforOn;
+		}
+		
 		
 	}
 

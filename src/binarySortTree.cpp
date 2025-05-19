@@ -205,6 +205,13 @@ void BST::drawBinarySearchTree(Node *node)
     {
         DrawLineEx((Vector2){node->coordinate.x, node->coordinate.y}, (Vector2){node->rightChild->coordinate.x, node->rightChild->coordinate.y}, 5, BLACK);
     }
+
+    if (CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera) , Vector2{node->coordinate.x,node->coordinate.y} , 40))
+    {
+        collisionNode = node;
+        nodeCollisionHelper = true;
+    }
+    
     
     if ( CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera) , Vector2{node->coordinate.x,node->coordinate.y} , 40) && IsMouseButtonDown(MOUSE_BUTTON_LEFT) && (holdingNode == node || holdingNode == nullptr))
     {
